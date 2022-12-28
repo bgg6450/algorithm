@@ -6,13 +6,6 @@ import java.util.*;
 public class Solution1 {
     public List<Integer> solution(String[] id_list, String[] report, int k) {
 
-//        List<String> newReport = new ArrayList<>();
-//        for (String a : report) {
-//            if (!newReport.contains(a)) {
-//                newReport.add(a);
-//            }
-//        }
-
         HashSet<String> newReport = new HashSet<>();
         Collections.addAll(newReport, report);
 
