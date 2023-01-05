@@ -1,58 +1,54 @@
 package level1;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
+// 다트 게임
 public class Solution {
+    public static int solution(String dartResult) {
+        dartResult += "0S";
+        int[] option = new int[3];
+        String[] sum = new String[3];
+        int result = 0;
 
-    static class Rate{
-        int idx;	// stage number
-        double rate; 	// fail rate
-
-        public Rate(int idx, double rate) {
-            this.idx = idx;
-            this.rate = rate;
-        }
-    }
-
-    public static int[] solution(int N, int[] stages) {
-
-
-        int[] user_cnt = new int[N + 2];	// 각 stage에 머물러있는 user 수
-        int[] user_total_cnt = new int[N + 1];	// 각 stage에 도달한 전체 user 수
-
-        for (int stage : stages) {
-            user_cnt[stage]++;
+        for (int i = 0; i < 3; i++) {
+            sum[i] += dartResult.split("[0-9][SDT]")[i+1];
+            option[i] += Integer.parseInt(String.valueOf(dartResult.replaceAll("[#*]", "").split("[SDT]")[i]));
         }
 
-        // 스테이지에 도달한 유저 수 누적(?)하여 구하기
-        // 맨 마지막 stage는 n번째 + (n+1)번째
-        user_total_cnt[N] = user_cnt[N] + user_cnt[N + 1];
-        for (int i = N-1; i >= 1; i--) {
-            user_total_cnt[i] = user_cnt[i] + user_total_cnt[i + 1];
+        for (int i = 0; i < 3; i++) {
+            result += option[i] * Integer.parseInt(String.valueOf(sum[i].equals("*") ? 2 : sum[i].equals("#") ? -1 : 1));
         }
-
-        ArrayList<Rate> arr = new ArrayList<>(); // stage 번호와 실패율을 저장
-        for (int i = 1; i <= N; i++) {
-
-            if(user_total_cnt[i]==0){ //스테이지에 도달한 유저가 없는 경우 해당 스테이지의 실패율은 0
-                arr.add(new Rate(i, 0));
-                continue;
-            }
-
-            double rate = (double) user_cnt[i] / user_total_cnt[i];
-            arr.add(new Rate(i, rate));
-        }
-
-        // fail rate가 높은 순으로 sorting
-        arr.sort(((o1, o2) -> Double.compare(o2.rate, o1.rate)));
-
-        // sorting 된 실패율의 stage 번호 저장
-        int[] answer = new int[N];
-        for (int i=0; i<arr.size(); i++) {
-            answer[i] = arr.get(i).idx;
-        }
-
-        return answer;
+        return result;
     }
 }
+
+//    int result = 0;
+//        int[] a = new int[3];
+//        String s = dartResult.replaceAll("[0-9*#]", "")
+//                .replace("S", "1")
+//                .replace("D", "2")
+//                .replace("T", "3");
+//
+//        System.out.println(s);
+//
+//        for (int i = 0; i < 3; i++) {
+//            String x = dartResult.split("[SDT]")[i];
+//            if (x.contains("*")) {
+//                a[i] += Integer.parseInt(x.replace("*", "")) * 2;
+//                if (i > 1) {
+//                    a[i - 1] *= 2;
+//                }
+//            } else if (x.contains("#")){
+//                a[i] += Integer.parseInt(x.replace("#", "")) * -1;
+//            } else {
+//                a[i] += Integer.parseInt(x);
+//            }
+//
+//        }
+//
+//        for (int i : a) {
+//            System.out.println(i);
+//        }
+//
+//        for (int i = 0; i < 3; i++) {
+//            result += Math.pow(a[i], Integer.parseInt(String.valueOf(s.charAt(i))));
+//        }
+//        return result;
