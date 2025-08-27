@@ -1,10 +1,5 @@
 package programmers.level2;
 
-import org.w3c.dom.Node;
-
-import java.util.ArrayDeque;
-import java.util.Queue;
-
 public class 타겟넘버 {
     int count = 0;
     public int solution(int[] numbers, int target) {
