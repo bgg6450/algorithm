@@ -6,8 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class 우주함정 {
-
+public class num2 {
     private static final int[] dX = {0, 0, 1, -1};
     private static final int[] dY = {1, -1, 0, 0};
 
@@ -30,12 +29,12 @@ public class 우주함정 {
 
         int result = bfs(beginNode, map, N, visited);
 
-        System.out.println("Hello Goorm! Your input is " + result);
+        System.out.println(result);
     }
 
     private static int bfs(int[] beginNode, String[][] map, int N, boolean[][] visited) {
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{beginNode[0], beginNode[1], 0});
+        queue.add(new int[]{beginNode[0], beginNode[1], 1});
 
         while (!queue.isEmpty()) {
             int[] current = queue.poll();
