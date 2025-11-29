@@ -1,6 +1,6 @@
 package programmers.level2;
 
-public class 피로도 {
+public class 피로도_1 {
     int max = 0;
 
     public int solution(int k, int[][] dungeons) {
