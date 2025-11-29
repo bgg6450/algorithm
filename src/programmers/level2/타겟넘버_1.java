@@ -1,6 +1,6 @@
 package programmers.level2;
 
-public class 타겟넘버 {
+public class 타겟넘버_1 {
     int count = 0;
     public int solution(int[] numbers, int target) {
         int answer;
