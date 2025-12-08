@@ -6,12 +6,12 @@ class 퇴사 {
 
     static int idx;
     static int[][] arr;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
         arr = new int[N][2];
-        idx = N - 1;
-
+        idx = N;
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < 2; j++) {
@@ -19,12 +19,12 @@ class 퇴사 {
             }
         }
 
-        dp(idx);
+        System.out.println(dp(initIdx()));
     }
 
-    static int nextIdx(int cn) {
-        for (int i = cn; i >= 0; i--) {
-            if ((i + arr[i][0]) <= cn + 1) {
+    static int initIdx() {
+        for (int i = idx - 1; i >= 0; i--) {
+            if ((i + arr[i][0]) <= idx) {
                 return i;
             }
         }
@@ -32,11 +32,19 @@ class 퇴사 {
     }
 
     static int dp(int idx) {
-        int nextIdx = nextIdx(idx);
-        if (nextIdx == -1) {
-            return 0;
+        if (idx == 0) {
+            return arr[0][1];
         }
-        System.out.println(arr[idx][1]);
+        int max = 0;
+        int nextIdx = 0;
+        for (int i = idx - 1; i >= 0; i--) {
+            if (idx - i >= arr[i][0]) {
+                max = Math.max(arr[i][1], max);
+                if (max == arr[i][1]) {
+                    nextIdx = i;
+                }
+            }
+        }
         return dp(nextIdx) + arr[idx][1];
     }
 }
