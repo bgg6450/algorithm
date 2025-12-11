@@ -6,29 +6,13 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 
-/**
- * 11 10
- * 7 4 0
- * 1 1 1 1 1 1 1 1 1 1
- * 1 0 0 0 0 0 0 0 0 1
- * 1 0 0 0 1 1 1 1 0 1
- * 1 0 0 1 1 0 0 0 0 1
- * 1 0 1 1 0 0 0 0 0 1
- * 1 0 0 0 0 0 0 0 0 1
- * 1 0 0 0 0 0 0 1 0 1
- * 1 0 0 0 0 0 1 1 0 1
- * 1 0 0 0 0 0 1 1 0 1
- * 1 0 0 0 0 0 0 0 0 1
- * 1 1 1 1 1 1 1 1 1 1
- *
- * 57
- *
- * 로봇 청소기
- */
-class Main {
+class 로봇청소기 {
 
-    static int[] dR = {-1, 0, 1, 0};
-    static int[] dC = {0, 1, 0, -1};
+    static int[] dRb = {1, 0, -1, 0};
+    static int[] dCb = {0, -1, 0, 1};
+    static int[] dRf = {-1, 0, 1, 0};
+    static int[] dCf = {0, 1, 0, -1};
+    static int count = 1;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -53,31 +37,43 @@ class Main {
         queue.add(new int[]{initR, initC, initD});
         cleaned[initR][initC] = true;
 
+
         while (!queue.isEmpty()) {
+            boolean isCleanable = false;
+
             int[] current = queue.poll();
             int currentR = current[0];
             int currentC = current[1];
             int currentD = current[2];
 
-            if (isNotCleaned(currentR, currentC, cleaned)) {
-                int nD = currentD == 0 ? 3 : currentD - 1;
-                int nR = currentR + dR[nD];
-                int nC = currentC + dC[nD];
-
-                queue.add(new int[]{nR, nC, nD});
-
+            for (int i = 0; i < 4; i++) {
+                currentD = nextDirection(currentD);
+                int nR = currentR + dRf[currentD];
+                int nC = currentC + dCf[currentD];
+                if (!map[nR][nC].equals("1") && !cleaned[nR][nC]) {
+                    isCleanable = true;
+                    count += 1;
+                    queue.add(new int[]{nR, nC, currentD});
+                    cleaned[nR][nC] = true;
+                    break;
+                }
+            }
+            if (!isCleanable) {
+                int nR = currentR + dRb[currentD];
+                int nC = currentC + dCb[currentD];
+                if (map[nR][nC].equals("1")) {
+                    System.out.println(count);
+                    return;
+                }
+                queue.add(new int[]{nR, nC, currentD});
             }
         }
     }
 
-    static boolean isNotCleaned(int currentR, int currentC, boolean[][] cleaned) {
-        for (int i = 0; i < 4; i++) {
-            int nR = currentR + dR[i];
-            int nC = currentC + dC[i];
-            if (!cleaned[nR][nC]) {
-                return true;
-            }
+    static int nextDirection(int currentD) {
+        if (currentD == 0) {
+            return 3;
         }
-        return false;
+        return currentD - 1;
     }
 }
