@@ -1,50 +1,39 @@
 package baekjoon.silver;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 class 퇴사 {
 
-    static int idx;
-    static int[][] arr;
+    static int[] Ti;
+    static int[] Pi;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        arr = new int[N][2];
-        idx = N;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st1 = new StringTokenizer(br.readLine());
 
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < 2; j++) {
-                arr[i][j] = sc.nextInt();
-            }
+        int N = Integer.parseInt(st1.nextToken());
+        Ti = new int[N + 1];
+        Pi = new int[N + 1];
+
+        for (int i = 1; i < N + 1; i++) {
+            StringTokenizer st2 = new StringTokenizer(br.readLine());
+            Ti[i] = Integer.parseInt(st2.nextToken());
+            Pi[i] = Integer.parseInt(st2.nextToken());
         }
 
-        System.out.println(dp(initIdx()));
-    }
-
-    static int initIdx() {
-        for (int i = idx - 1; i >= 0; i--) {
-            if ((i + arr[i][0]) <= idx) {
-                return i;
-            }
+        for (int i = N; i > 0; i--) {
+            dp(i);
         }
-        return -1;
     }
 
     static int dp(int idx) {
-        if (idx == 0) {
-            return arr[0][1];
+        int next = idx + Ti[idx];
+        if (next <= idx) {
+            return Math.max(dp(next) + Pi[idx], dp(idx + 1));
         }
-        int max = 0;
-        int nextIdx = 0;
-        for (int i = idx - 1; i >= 0; i--) {
-            if (idx - i >= arr[i][0]) {
-                max = Math.max(arr[i][1], max);
-                if (max == arr[i][1]) {
-                    nextIdx = i;
-                }
-            }
-        }
-        return dp(nextIdx) + arr[idx][1];
+        return Pi[idx];
     }
 }
