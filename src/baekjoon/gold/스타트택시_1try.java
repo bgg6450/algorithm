@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 5 4 1 6
 4 2 3 5
 */
-class 스타트택시 {
+class 스타트택시_1try {
 
     static int[] dr = {-1, 1, 0, 0};
     static int[] dc = {0, 0, -1, 1};
