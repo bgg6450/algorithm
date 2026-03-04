@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-class 연산자끼워넣기 {
+class 연산자끼워넣기_1 {
 
     static int target;
     static int[] nums;
