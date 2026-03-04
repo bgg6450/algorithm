@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
  * 7 1 0 2
  * 3 4 5 0
  */
-class 스타트와링크 {
+class 스타트와링크_1_1 {
 
     static List<int[]> results = new ArrayList<>();
     static List<Integer> l = new ArrayList<>();

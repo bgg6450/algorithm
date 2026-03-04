@@ -1,56 +1,67 @@
 package baekjoon.silver;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-class 스타트와링크_2 {
+public class 스타트와링크_2 {
 
     static int N;
-    static int[][] map;
+    static int R;
     static boolean[] visited;
+    static int[][] table;
+    static List<Integer> teamA = new ArrayList<>();
+    static List<Integer> teamB = new ArrayList<>();
     static int result = Integer.MAX_VALUE;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        R = N / 2;
         visited = new boolean[N];
-        map = new int[N][N];
+        table = new int[N][N];
 
         for (int i = 0; i < N; i++) {
+            String[] row = br.readLine().split(" ");
             for (int j = 0; j < N; j++) {
-                map[i][j] = sc.nextInt();
+                table[i][j] = Integer.parseInt(row[j]);
             }
         }
-        comb(0, 0);
+        combination(0, 0);
         System.out.println(result);
     }
 
-    static void comb(int start, int depth) {
-        if (depth == N/2) {
-            calc();
+    public static void combination(int depth, int start) {
+        if (depth == R) {
+            for (int j = 0; j < N; j++) {
+                if (visited[j]) {
+                    teamA.add(j);
+                } else {
+                    teamB.add(j);
+                }
+            }
+            result = Math.min(Math.abs(count(teamA) - count(teamB)), result);
+            teamA = new ArrayList<>();
+            teamB = new ArrayList<>();
             return;
         }
 
         for (int i = start; i < N; i++) {
             visited[i] = true;
-            comb(i + 1, depth + 1);
+            combination(depth + 1, i + 1);
             visited[i] = false;
         }
     }
 
-    static void calc() {
-        int a = 0;
-        int b = 0;
-        for (int i = 0; i < N - 1; i++) {
-            for (int j = i+1; j < N; j++) {
-                if (visited[i] && visited[j]) {
-                    a += map[i][j] + map[j][i];
-                }
-
-                if (!visited[i] && !visited[j]) {
-                    b += map[i][j] + map[j][i];
-                }
+    public static int count(List<Integer> team) {
+        int result = 0;
+        for (int i = 0; i < team.size(); i++) {
+            for (int j = 0; j < team.size(); j++) {
+                result += table[team.get(i)][team.get(j)];
             }
         }
-        result = Math.min(Math.abs(a - b), result);
+        return result;
     }
 }
