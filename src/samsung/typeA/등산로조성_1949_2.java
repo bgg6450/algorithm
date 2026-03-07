@@ -3,11 +3,9 @@ package samsung.typeA;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class 등산로조성_1949 {
+public class 등산로조성_1949_2 {
 
     static int T;
     static int N;
@@ -28,7 +26,7 @@ public class 등산로조성_1949 {
             N = Integer.parseInt(st2.nextToken());
             K = Integer.parseInt(st2.nextToken());
             map = new int[N][N];
-            answer = Integer.MIN_VALUE;
+            answer = 1;
             int highest = 1;
             boolean[][] visited = new boolean[N][N];
 
@@ -40,46 +38,43 @@ public class 등산로조성_1949 {
                 }
             }
 
-            int[][] clonedMap = new int[N][N];
             for (int j = 0; j < N; j++) {
                 for (int k = 0; k < N; k++) {
-                    clonedMap[j][k] = map[j][k];
-                    for (int l = 1; l < K+1; l++) {
-                        clonedMap[j][k] -= l;
-                        bfs(highest, visited, clonedMap);
-                        clonedMap[j][k] += l;
+                    if (map[j][k] == highest) {
+                        visited[j][k] = true;
+                        dfs(1, new int[]{j, k}, false, visited);
+                        visited[j][k] = false;
                     }
                 }
             }
-
             System.out.println(String.format("#%d %d", i+1, answer));
         }
     }
 
-    private static void bfs(int highest, boolean[][] visited, int[][] clonedMap) {
-        int result = 1;
-        Queue<int[]> queue = new LinkedList<>();
-        for (int j = 0; j < N; j++) {
-            for (int k = 0; k < N; k++) {
-                if (clonedMap[j][k] == highest) {
-                    queue.add(new int[]{j, k});
-                }
-            }
-        }
-        while (!queue.isEmpty()) {
-            int[] current = queue.poll();
-            int currentR = current[0];
-            int currentC = current[1];
-            for (int k = 0; k < 4; k++) {
-                int nR = currentR + dR[k];
-                int nC = currentC + dC[k];
-                if (nR >= 0 && nR < N && nC >= 0 && nC < N && !visited[nR][nC] && clonedMap[nR][nC] < clonedMap[currentR][currentC]) {
-                    queue.add(new int[]{nR, nC});
+    private static void dfs(int depth, int[] current, boolean isFlattened, boolean[][] visited) {
+        int currentR = current[0];
+        int currentC = current[1];
+        for (int i = 0; i < 4; i++) {
+            int nR = currentR + dR[i];
+            int nC = currentC + dC[i];
+            if (nR >= 0 && nR < N && nC >= 0 && nC < N && !visited[nR][nC]) {
+                if (map[nR][nC] < map[currentR][currentC]) {
                     visited[nR][nC] = true;
-                    result++;
+                    dfs(depth + 1, new int[]{nR, nC}, isFlattened, visited);
+                    visited[nR][nC] = false;
+                } else if (!isFlattened) {
+                    for (int j = 1; j < K+1; j++) {
+                        if (map[nR][nC] - j < map[currentR][currentC]) {
+                            map[nR][nC] -= j;
+                            visited[nR][nC] = true;
+                            dfs(depth + 1, new int[]{nR, nC}, true, visited);
+                            visited[nR][nC] = false;
+                            map[nR][nC] += j;
+                        }
+                    }
                 }
             }
         }
-        answer = Math.max(result, answer);
+        answer = Math.max(answer, depth);
     }
 }
