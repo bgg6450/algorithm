@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-class 치킨배달 {
+class 치킨배달_1 {
 
     static int M;
     static List<int[]> chickenMap = new ArrayList<>();
