@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-class 연구소 {
+class 연구소_1 {
 
     static int[][] map;
     static int row;
