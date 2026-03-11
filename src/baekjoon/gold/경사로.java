@@ -27,7 +27,7 @@ public class 경사로 {
         for (int r = 0; r < N; r++) {
             int[] row = map[r];
             if (isQualified(row)) {
-                dfs();
+//                dfs();
             };
         }
     }
