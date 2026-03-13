@@ -7,33 +7,41 @@ import java.util.StringTokenizer;
 
 class 퇴사 {
 
-    static int[] Ti;
-    static int[] Pi;
+    static int N;
+    static int[] T;
+    static int[] P;
+    static int answer = Integer.MIN_VALUE;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st1 = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(br.readLine());
+        T = new int[N];
+        P = new int[N];
 
-        int N = Integer.parseInt(st1.nextToken());
-        Ti = new int[N + 1];
-        Pi = new int[N + 1];
-
-        for (int i = 1; i < N + 1; i++) {
-            StringTokenizer st2 = new StringTokenizer(br.readLine());
-            Ti[i] = Integer.parseInt(st2.nextToken());
-            Pi[i] = Integer.parseInt(st2.nextToken());
+        for (int i = 0; i < N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            T[i] = Integer.parseInt(st.nextToken());
+            P[i] = Integer.parseInt(st.nextToken());
         }
-
-        for (int i = N; i > 0; i--) {
-            dp(i);
-        }
+        dfs(0, 0);
+        System.out.println(answer);
     }
 
-    static int dp(int idx) {
-        int next = idx + Ti[idx];
-        if (next <= idx) {
-            return Math.max(dp(next) + Pi[idx], dp(idx + 1));
+    private static void dfs(int idx, int total) {
+        if (idx == N - 1) {
+            if (T[idx] == 1) {
+                total += P[idx];
+            }
+            answer = Math.max(answer, total);
+            return;
         }
-        return Pi[idx];
+        int cT = T[idx];
+        int cP = P[idx];
+        if (idx + cT < N) {
+            dfs(idx + cT - 1, total + cP);
+            dfs(idx + 1, total + cP);
+        } else {
+            dfs(idx + 1, total + cP);
+        }
     }
 }
